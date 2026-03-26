@@ -1,4 +1,4 @@
-# 🎮 Ultimate Gaming Hub!
+# 🎮 Ultimate Gaming Hub
 
 ## A Professional C Console Gaming Platform
 
