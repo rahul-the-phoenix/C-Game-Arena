@@ -15,10 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Author: [Your Name]
+ * Author: Rahul Manna
  * Date: 2026
  * Description: A console-based multi-game application featuring Rock Paper Scissors,
  *              Number Guessing, and Math Challenge with multiple difficulty levels.
+ 
+ *-------------------HAPPY GAMING-------------
  */
 
 
