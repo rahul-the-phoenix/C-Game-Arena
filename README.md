@@ -1,216 +1,214 @@
-# 🎮 Ultimate Gaming Hub!!
+# 🎮 Ultimate Gaming Hub
 
-## A Professional C Console Gaming Platform
-
----
+## A Colorful C Console Gaming Platform for Windows
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![License](https://img.shields.io/badge/license-GPLv3-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
-![Language](https://img.shields.io/badge/language-C-orange)
-![Status](https://img.shields.io/badge/status-stable-brightgreen)
+![Language](https://img.shields.io/badge/language-C89-orange)
+![Games](https://img.shields.io/badge/games-8-brightgreen)
 
 </div>
 
 ---
 
-
 ## 🚀 Overview
 
-**Ultimate Gaming Hub** is a sophisticated console-based gaming platform developed in C, featuring three distinct games with progressive difficulty systems, real-time performance tracking, and an engaging visual interface. This project showcases advanced programming concepts including dynamic memory management, time-based event handling, and modular architecture.
+**Ultimate Gaming Hub** is a console-based gaming platform written in C. Version 2.0 grows the collection from 3 to **8 games**, including a real-time Snake, an unbeatable Tic-Tac-Toe AI, Blackjack, Hangman and a Simon-style memory game, all with a colorful ANSI interface.
+
+The code is written in plain **C89 style**, so it also builds in old compilers such as Dev-C++.
 
 ### Key Statistics
 
 | Metric | Value |
 |--------|-------|
-| **Lines of Code** | 800+ |
-| **Games Included** | 3 |
-| **Difficulty Levels** | 7 |
+| **Lines of Code** | 1000+ |
+| **Games Included** | 8 |
+| **Math Difficulty Levels** | 6 + Time Challenge |
 | **Operators Supported** | 5 (+, -, *, /, %) |
-| **Time Modes** | 3 (Untimed, Timed, Vanishing) |
+| **AI Difficulty Levels (Tic-Tac-Toe)** | 3 |
 
 ---
 
-## ✨ Features
+## 🆕 What's New in 2.0
 
-### 🎨 Advanced Console Graphics
-- **ANSI Color Codes**: 16+ color combinations for enhanced visual experience
-- **Dynamic Animations**: Blinking effects, countdown timers, and gradual text reveal
-- **Progress Indicators**: Real-time visual feedback for user actions
-
-### ⏱️ Precision Timing System
-- **Microsecond Accuracy**: Using `difftime()` for precise measurement
-- **Multiple Time Modes**:
-  - Untimed Practice
-  - Fixed Time Limits (5 seconds)
-  - Custom Time Challenges
-  - Vanishing Equations (3-second visibility)
-
-### 📊 Comprehensive Analytics
-- **Per-Session Statistics**: Win/Loss tracking
-- **Performance Metrics**: Average response time calculation
-- **Win Probability**: Percentage-based performance evaluation
-- **Personalized Feedback**: Contextual performance assessment
-
-### 🎮 User Experience
-- **Intuitive Navigation**: Hierarchical menu system
-- **State Persistence**: Session statistics maintained across games
-- **Error Handling**: Comprehensive input validation
-- **Graceful Exit**: Animated termination sequence
+- **5 new games:** Hangman, Tic-Tac-Toe, Snake, Memory Master and Blackjack
+- **Safe input everywhere:** typing letters instead of numbers no longer breaks a menu
+- **Millisecond timing** via `GetTickCount()` (the old `difftime()` timer only had 1-second resolution)
+- **Math Challenge refactor:** the six levels share one function, cutting hundreds of duplicated lines
+- **Fairer timed levels:** the Pro and Grand Master timer now starts when the answer prompt appears, not before the 3-second vanish alert
+- **Time Challenge fix:** answers submitted after time is up are not counted
+- **ANSI colors are enabled automatically** on Windows consoles that need it
 
 ---
 
 ## 🎯 Games
 
+| # | Game | Type | Highlights |
+|---|------|------|-----------|
+| 1 | Rock Paper Scissors | Luck | Win / loss / draw tracking, win probability |
+| 2 | Number Guessing | Luck | 1-in-5 odds, session statistics |
+| 3 | Math Challenge | Skill | 6 levels + Time Challenge, vanishing equations |
+| 4 | Hangman | Word | 4 categories, ASCII gallows, one hint per word |
+| 5 | Tic-Tac-Toe | Strategy | Easy, Medium and Unbeatable (minimax) AI |
+| 6 | Snake | Real-time | Arrow keys / WASD, speed levels, timed bonus food |
+| 7 | Memory Master | Memory | Flashing digit sequences, 3 lives, 3 difficulties |
+| 8 | Blackjack | Cards | Hit, Stand, Double Down, 3:2 blackjack payout |
+
 ### 1. Rock Paper Scissors 🪨📄✂️
 
-Classic hand game with advanced tracking:
+- Computer picks randomly (1-3)
+- Tracks wins, losses and draws, with win probability
+- Shows who is currently ahead
 
-```c
-// Game Mechanics
-- Computer AI: Random selection (1-3)
-- Win/Loss/Draw tracking
-- Real-time probability calculation
-- Session statistics persistence
-```
+### 2. Number Guessing 🔢
 
-**Features:**
-- Dynamic win probability display
-- Performance-based feedback
-- Draw match recognition
-- Competitive analysis (You vs Computer)
+- Guess a number from 1 to 5
+- Tracks win/loss and win percentage
 
-### 2. Number Guessing Game 🔢
+### 3. Math Challenge 🧮
 
-Test your intuition and luck:
+| Level | Operands | Operators | Rule |
+|-------|----------|-----------|------|
+| **Noob** | 2 (1-10) | +, - | No time limit |
+| **Beginner** | 2 (5-15) | +, -, *, / | No time limit |
+| **Intermediate** | 2 (10-20) | +, -, *, /, % | No time limit |
+| **Advance** | 2 (10-30) | All 5 | Equation vanishes after 3 s |
+| **Pro** | 2 (10-30) | All 5 | Equation revealed piece by piece, then vanishes; answer within 5 s |
+| **Grand Master** | 3 (10-30), as `( a op b ) op c` | All 5 | Same reveal; answer within 5 s |
+| **Time Challenge** | 2 (1-15) | All 5 | You choose the time limit |
 
-```c
-// Game Mechanics
-- Range: 1-5
-- Random number generation
-- Immediate result feedback
-- Win percentage tracking
-```
+> Division is integer division (the remainder is dropped), and `%` is the remainder.
 
-**Features:**
-- 1:5 odds system
-- Real-time accuracy tracking
-- Comparative performance analysis
+Each level reports total games, wins, losses, win percentage, average response time and a feedback message.
 
-### 3. Math Challenge Game 🧮
+### 4. Hangman 🪢
 
-Comprehensive mental math platform with 7 difficulty tiers:
+- Categories: Animals, Countries, Tech, Food, or a random surprise
+- 6 lives with an ASCII gallows that updates on every mistake
+- Type `?` once per word for a hint (reveals a letter, costs 1 life, never your last life)
+- Used letters are colored green (in the word) or red (not in the word)
 
-| Level | Operand Range | Operators | Time Constraint | Target Audience |
-|-------|--------------|-----------|-----------------|-----------------|
-| **Noob** | 1-10 | +, - | None | Beginners |
-| **Beginner** | 5-15 | +, -, *, / | None | Casual Players |
-| **Intermediate** | 10-20 | +, -, *, /, % | None | Intermediate |
-| **Advance** | 10-30 | All 5 | 3s Vanishing | Advanced |
-| **Pro** | 10-30 | All 5 | 5s Limit | Expert |
-| **Grand Master** | 10-30 (3 operands) | All 5 | 5s Limit | Elite |
-| **Time Challenge** | 1-15 | All 5 | Custom | Competitive |
+### 5. Tic-Tac-Toe ❌⭕
+
+| Level | Computer behavior |
+|-------|-------------------|
+| **Easy** | Random moves |
+| **Medium** | Takes a win, blocks your win, otherwise random |
+| **Unbeatable** | Full minimax search, picks randomly among equally good moves |
+
+You play `X` and enter cells 1-9. The player who starts alternates every round, and the score is kept across rounds.
+
+### 6. Snake 🐍
+
+- Real-time play on a 30 x 18 board
+- Eat `()` for **+10** points and grow
+- A timed `$$` bonus appears every 5 foods for **+30**
+- The snake speeds up as it grows
+- The whole frame is drawn in a single write, so there is no flicker
+- Best score is remembered for the session
+
+| Key | Action |
+|-----|--------|
+| `W A S D` / Arrow keys | Steer |
+| `P` | Pause / resume |
+| `Q` | Quit to menu |
+
+### 7. Memory Master 🧠
+
+Digits flash one at a time, then you type the whole sequence back (spaces are optional).
+
+| Difficulty | Flash time | Score multiplier |
+|------------|-----------|------------------|
+| Easy | 900 ms | x1 |
+| Medium | 600 ms | x2 |
+| Hard | 350 ms | x3 |
+
+Every correct round adds one digit. A wrong answer costs a life and repeats the same pattern. You have 3 lives and the game ends at round 30.
+
+### 8. Blackjack 🃏
+
+- Start with **500 chips**; bet `0` to leave the table
+- Blackjack pays **3:2**; the dealer stands on 17
+- Actions: **Hit**, **Stand**, **Double Down** (first move only)
+- Proper shuffled 52-card deck, with the dealer's cards revealed one by one
+- Red cards (hearts and diamonds) are shown in red
 
 ---
 
-## 📈 Difficulty System
+## ✨ Features
 
-### Mathematical Progression
+### 🎨 Console Graphics
+- ANSI colors throughout the interface
+- Blinking exit animation, countdown alerts and gradual equation reveal
+- Flicker-free Snake rendering using cursor positioning
 
-```mermaid
-graph LR
-    A[Noob] --> B[Beginner]
-    B --> C[Intermediate]
-    C --> D[Advance]
-    D --> E[Pro]
-    E --> F[Grand Master]
-    F --> G[Time Challenge]
-```
+### ⏱️ Timing System
+- Millisecond-accurate answer timing (`GetTickCount()`)
+- Untimed practice, 3-second vanishing equations, 5-second limits and custom time challenges
 
-### Operator Complexity
+### 📊 Analytics
+- Per-session win / loss tracking in every game
+- Average response time and win percentage in the Math Challenge
+- Best scores kept for Snake and Memory Master during the session
 
-| Level | Operators | Complexity Factor |
-|-------|-----------|-------------------|
-| Noob | 2 | 1.0x |
-| Beginner | 4 | 1.5x |
-| Intermediate+ | 5 | 2.0x |
-
-### Time Constraints
-
-| Mode | Time Limit | Penalty |
-|------|------------|---------|
-| Practice | None | No penalty |
-| Vanishing | 3s visibility | Question disappears |
-| Timed | 5s answer | Late = incorrect |
-| Custom | User-defined | Immediate termination |
+### 🛡️ Input Handling
+- A single `readInt()` helper validates every numeric menu input
+- Letters, empty input and out-of-range values are rejected with a message instead of crashing or looping
 
 ---
 
 ## 🏗️ Technical Architecture
 
-### Code Structure
+```
+Game-Arena.c
+├── Includes: stdio, stdlib, string, ctype, time, conio, windows
+├── Helpers: readInt, readLine, banner, clr, blinkalert, blinkterminate
+├── Game 1  rpsGame()          Rock Paper Scissors
+├── Game 2  guessGame()        Number Guessing
+├── Game 3  mathChallenge()    Menu for levels 1-6 and Time Challenge
+│           playMath()         One data-driven function for all levels
+│           timeChallenge()    Custom time limit mode
+├── Game 4  hangmanGame()
+├── Game 5  tttGame()          tttAI() + minimax()
+├── Game 6  snakeGame()        Real-time loop with _kbhit() / _getch()
+├── Game 7  memoryGame()
+├── Game 8  blackjackGame()    Deck, hand value (soft aces), dealer logic
+└── main()  Main menu
+```
 
-```
-ultimate_gaming_hub.c
-├── Header Includes
-│   ├── stdio.h      (I/O Operations)
-│   ├── stdlib.h     (Memory & Random)
-│   ├── time.h       (Timing Functions)
-│   └── windows.h    (Console Control)
-│
-├── Function Prototypes
-│   ├── result()           - Statistics display
-│   ├── result2()          - Time challenge results
-│   ├── blinkterminate()   - Exit animation
-│   └── blinkalert()       - Countdown alerts
-│
-├── Global Variables
-│   └── Game state, counters, timing data
-│
-└── Main Program
-    ├── Game Selection Menu
-    ├── Rock Paper Scissors Module
-    ├── Number Guessing Module
-    ├── Math Challenge Module
-    │   ├── 7 Difficulty Levels
-    │   └── 3 Game Modes
-    └── Statistics Engine
-```
+The Math Challenge levels are described by a small `Level` struct (operand range, operator count, number of operands, reveal mode, time limit), so adding a new level is a single table entry.
+
 ---
 
 ## 💻 Installation
 
 ### System Requirements
 
-| Component | Minimum Requirement |
-|-----------|---------------------|
-| **OS** | Windows 7/8/10/11 |
-| **Compiler** | GCC 4.9+ / MSVC 2015+ |
-| **Memory** | 64 MB RAM |
-| **Storage** | 1 MB free space |
-| **Terminal** | ANSI color support |
+| Component | Requirement |
+|-----------|-------------|
+| **OS** | Windows 7 / 8 / 10 / 11 |
+| **Compiler** | GCC (MinGW / TDM-GCC) or Dev-C++ |
+| **Terminal** | Windows Terminal or `cmd` (ANSI colors) |
 
-### Compilation Instructions
+> The game uses `windows.h`, `conio.h` and `system("cls")`, so it targets Windows only.
 
-#### Method 1: GCC (MinGW)
+### Compile
+
+#### GCC (MinGW)
 ```bash
-# Install MinGW if not present
-# Then compile:
-gcc -o gaming_hub.exe ultimate_gaming_hub.c -Wall -Wextra
-
-# Run
-./gaming_hub.exe
+gcc Game-Arena.c -o game_arena.exe -Wall -Wextra
+./game_arena.exe
 ```
 
-#### Method 2: Visual Studio Command Line
-```bash
-cl /W4 ultimate_gaming_hub.c
-ultimate_gaming_hub.exe
-```
+#### Dev-C++
+1. Open `Game-Arena.c`
+2. Press **F11** (Compile & Run)
+3. If colors look garbled (`←[93m`), run the `.exe` from Windows Terminal or `cmd` instead of Dev-C++'s own console window
 
-#### Method 3: VS Code with C/C++ Extension
+#### VS Code
 ```json
 {
     "tasks": [
@@ -218,7 +216,7 @@ ultimate_gaming_hub.exe
             "type": "cppbuild",
             "label": "Compile Gaming Hub",
             "command": "gcc",
-            "args": ["-g", "ultimate_gaming_hub.c", "-o", "gaming_hub.exe"]
+            "args": ["-g", "Game-Arena.c", "-o", "game_arena.exe"]
         }
     ]
 }
@@ -230,206 +228,124 @@ ultimate_gaming_hub.exe
 
 ### Quick Start
 
-1. **Launch the Application**
-   ```bash
-   ./gaming_hub.exe
-   ```
-
-2. **Initial Prompt**
+1. Launch `game_arena.exe`
+2. Answer the first prompt:
    ```
    Do you want to play?
    1. Yes   2. No
    ```
-
-3. **Game Selection**
+3. Pick a game from the main menu:
    ```
+   =========== GAME ARENA ===========
    1. ROCK PAPER SCISSORS
    2. NUMBER GUESSING
    3. MATH CHALLENGE
-   4. EXIT
+   4. HANGMAN
+   5. TIC-TAC-TOE
+   6. SNAKE
+   7. MEMORY MASTER
+   8. BLACKJACK
+   9. EXIT
    ```
 
-### Game-Specific Instructions
-
-#### Rock Paper Scissors
-- Select 1 (ROCK), 2 (PAPER), or 3 (SCISSORS)
-- Computer randomly selects
-- Results displayed immediately
-- Use option 2 to view statistics
-
-#### Number Guessing
-- Guess a number between 1-5
-- Compare with computer's selection
-- Track win/loss ratio
-
-#### Math Challenge
-1. Select difficulty level (1-9)
-2. Choose: Start, Result, Previous Menu, or Exit
-3. Solve displayed equations
-4. For timed levels: Respond before time expires
-5. Check performance with Result option
-
-### Keyboard Shortcuts
+### Navigation
 
 | Action | Input |
 |--------|-------|
-| Confirm Choice | Enter |
-| Navigate Menus | Number Keys |
-| Exit Game | 4 (Main Menu) / 9 (Math Menu) |
+| Choose a menu item | Type the number, then **Enter** |
+| Leave a game for the main menu | The "Main Menu" option in that game's menu |
+| Exit the program | `9` in the main menu (or Exit inside a game menu) |
 
----
+### Sample: Hangman
 
-## 📁 Code Structure
-
-### Variable Naming Convention
-
-| Prefix | Type | Example |
-|--------|------|---------|
-| `a, b, c` | Operands | `int a, b, c` |
-| `compans1` | Computer answer | `int compans1` |
-| `win, loss` | Counters | `int win, loss` |
-| `diff` | Time difference | `float diff` |
-
-### Color Codes Used
-
-| Code | Color | Usage |
-|------|-------|-------|
-| `\033[32m` | Green | Correct answers |
-| `\033[31m` | Red | Errors, warnings |
-| `\033[93m` | Yellow | Equations, prompts |
-| `\033[96m` | Cyan | Information |
-| `\033[35m` | Purple | Computer choices |
-
----
-
-## 📸 Screenshots
-
-### Main Menu
 ```
-╔══════════════════════════════════════╗
-║     ULTIMATE GAMING HUB v1.0         ║
-╠══════════════════════════════════════╣
-║  1. ROCK PAPER SCISSORS              ║
-║  2. NUMBER GUESSING                  ║
-║  3. MATH CHALLENGE                   ║
-║  4. EXIT                             ║
-╚══════════════════════════════════════╝
++--------------------------------------+
+|               HANGMAN                |
++--------------------------------------+
+Category: ANIMALS   Lives: 4   Hints: 1
+
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========
+
+  P E N G _ I N
+
+Used: P E N G I N A T
+Guess a letter (? = hint):
 ```
 
-### Math Challenge - Pro Mode
+### Sample: Tic-Tac-Toe
+
 ```
-┌─────────────────────────────────────────┐
-│ Your level: PRO                         │
-│ GAME RULE:                              │
-│ 2 operands (10-30) | Time limit: 5 sec  │
-├─────────────────────────────────────────┤
-│ 1. Start   2. Result   3. Previous      │
-│ 4. Exit                                 │
-└─────────────────────────────────────────┘
+  You: X   Computer: O   [Unbeatable]
 
-Equation: 25 * 12
-Alert!! Equation will vanish after 3 seconds
-Time remaining: 3... 2... 1...
+         X | 2 | 3
+        ---+---+---
+         4 | O | 6
+        ---+---+---
+         7 | 8 | 9
 
-Your answer: 300
-✅ Correct! You took 2.45 seconds
+Your move (1-9):
 ```
 
-### Statistics Display
+### Sample: Blackjack
+
 ```
-╔═══════════════════════════════════════╗
-║           YOUR RESULT                 ║
-╠═══════════════════════════════════════╣
-║ total game: 10   win: 7   loss: 3    ║
-║ percentage of win: 70.000%           ║
-║ average time: 3.42 seconds           ║
-╠═══════════════════════════════════════╣
-║ You are a pro player at this level!  ║
-╚═══════════════════════════════════════╝
+Chips: 500   Bet: 50
+
+Dealer: [KS] [??]  (showing 10)
+
+You:    [8H] [7C]  = 15
+
+1. Hit  2. Stand  3. Double
+Your move:
 ```
 
 ---
 
-## 📊 Performance Metrics
+## 🗺️ Roadmap
 
-### Benchmark Results
+### Done in 2.0
+- [x] Tic-Tac-Toe
+- [x] Hangman
+- [x] Snake, Memory Master and Blackjack
+- [x] Safe input handling and millisecond timing
 
-| Operation | Average Time |
-|-----------|--------------|
-| Compilation | 0.5s |
-| Startup | 0.1s |
-| Equation Generation | 0.001s |
-| Input Processing | <0.01s |
+### Next Up
+- [ ] High score persistence (file I/O)
+- [ ] Two-player mode for Tic-Tac-Toe and Hangman
+- [ ] Configuration file for settings
+- [ ] Achievement system and daily challenges
+- [ ] Power and square-root operators in the Math Challenge
 
-### Memory Usage
-
-| Component | Memory |
-|-----------|--------|
-| Code Segment | 25 KB |
-| Data Segment | 5 KB |
-| Stack | 8 KB |
-| **Total** | **38 KB** |
-
----
-
-## 🗺️ Future Roadmap
-
-### Phase 1: Enhancement (Q2 2026)
-- [ ] Add more games (Tic-Tac-Toe, Hangman)
-- [ ] Implement high score persistence (file I/O)
-- [ ] Add power and square root operators
-- [ ] Create configuration file for settings
-
-### Phase 2: Advanced Features (Q3 2026)
-- [ ] Network multiplayer support
+### Future Ideas
+- [ ] Linux / macOS support (replace `windows.h` and `conio.h`)
 - [ ] Online leaderboards
-- [ ] Achievement system
-- [ ] Daily challenges
-
-### Phase 3: Cross-Platform (Q4 2026)
-- [ ] Linux compatibility (remove windows.h)
-- [ ] macOS support
-- [ ] Web assembly version
-- [ ] Mobile port (C++ with SDL)
+- [ ] Network multiplayer
 
 ---
 
 ## 🤝 Contributing
 
-While this is a personal project, suggestions and feedback are welcome!
+Suggestions and feedback are welcome!
 
 1. Fork the repository
 2. Create a feature branch
-3. Submit a pull request
-4. Provide detailed description of changes
+3. Submit a pull request with a clear description of your changes
 
 ---
 
 ## 📄 License
 
-```
-MIT License
+Copyright (C) 2026 Rahul Manna
 
-Copyright (c) 2026 Rahul Manna (@rahul-the-phoenix)
+This program is free software: you can redistribute it and/or modify it under the terms of the **GNU General Public License** as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details: <https://www.gnu.org/licenses/>.
 
 ---
 
@@ -442,26 +358,6 @@ SOFTWARE.
 | **GitHub** | [@rahul-the-phoenix](https://github.com/rahul-the-phoenix) |
 | **Email** | rahulmanna3892@gmail.com |
 | **Project** | Ultimate Gaming Hub |
-
----
-
-## 🙏 Acknowledgments
-
-- **C Standard Library** - Foundation of the project
-- **Open Source Community** - Inspiration and best practices
-- **All Testers** - Valuable feedback and bug reports
-
----
-
-## 📊 Project Status
-
-| Metric | Status |
-|--------|--------|
-| **Code Quality** | ✅ Production Ready |
-| **Documentation** | ✅ Complete |
-| **Testing** | ✅ Validated |
-| **Maintenance** | 🟢 Active |
-| **Support** | 🟢 Available |
 
 ---
 
