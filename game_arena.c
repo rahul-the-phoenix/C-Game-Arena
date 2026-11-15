@@ -41,20 +41,16 @@
 #include <conio.h>
 #include <windows.h>
 
-/* ------------------------------------------------------------------ */
-/*  Global data                                                       */
-/* ------------------------------------------------------------------ */
+// global data
 static const char ch[] = {'+', '-', '*', '/', '%'};
 
-/* ------------------------------------------------------------------ */
-/*  Generic helpers                                                   */
-/* ------------------------------------------------------------------ */
+// helper functions
 static void enableANSI(void) {
     HANDLE h;
     DWORD mode = 0;
     h = GetStdHandle(STD_OUTPUT_HANDLE);
     if (GetConsoleMode(h, &mode))
-        SetConsoleMode(h, mode | 0x0004);   /* ENABLE_VIRTUAL_TERMINAL_PROCESSING */
+        SetConsoleMode(h, mode | 0x0004);   // turn on ANSI colors
 }
 
 static void clr(void) { system("cls"); }
@@ -64,7 +60,7 @@ static void readLine(char *buf, int n) {
     buf[strcspn(buf, "\r\n")] = '\0';
 }
 
-/* Safe integer input: never loops forever on letters, always re-asks. */
+// read an int, keep asking until the input is valid
 static int readInt(const char *prompt) {
     char buf[64];
     char *end;
@@ -124,9 +120,7 @@ static void pressEnter(void) {
     readLine(tmp, sizeof tmp);
 }
 
-/* ------------------------------------------------------------------ */
-/*  Result printers (Math Challenge)                                  */
-/* ------------------------------------------------------------------ */
+// math result printers
 static void result(int win, int loss, float x) {
     float percent = 0.0f;
 
@@ -157,9 +151,7 @@ static void result2(int win, int loss, int sec) {
     printf("\ntotal game: %d   win: %d  loss: %d\n", win + loss, win, loss);
 }
 
-/* ================================================================== */
-/*  GAME 1 : ROCK PAPER SCISSORS                                      */
-/* ================================================================== */
+// GAME 1 : Rock Paper Scissors
 static void rpsGame(void) {
     int e = 0, f = 0, g = 0;
     int choice, n, r, rem;
@@ -216,9 +208,7 @@ static void rpsGame(void) {
     }
 }
 
-/* ================================================================== */
-/*  GAME 2 : NUMBER GUESSING                                          */
-/* ================================================================== */
+// GAME 2 : Number Guessing
 static void guessGame(void) {
     int e = 0, f = 0;
     int choice, n, r;
@@ -261,18 +251,16 @@ static void guessGame(void) {
     }
 }
 
-/* ================================================================== */
-/*  GAME 3 : MATH CHALLENGE                                           */
-/* ================================================================== */
+// GAME 3 : Math Challenge
 typedef struct {
     const char *name;
     const char *color;
     const char *rule;
-    int lo, span;      /* operand = lo + rand() % span          */
-    int nops;          /* how many operators from ch[] are used */
-    int operands;      /* 2 or 3                                */
-    int mode;          /* 0 visible, 1 vanish, 2 timed reveal   */
-    int limit;         /* seconds, 0 = no limit                 */
+    int lo, span;      // operand = lo + rand() % span
+    int nops;          // how many operators from ch[] are used
+    int operands;      // 2 or 3
+    int mode;          // 0 visible, 1 vanish, 2 timed reveal
+    int limit;         // seconds, 0 = no limit
 } Level;
 
 static const Level LV[6] = {
@@ -289,7 +277,7 @@ static int applyOp(int a, char op, int b) {
         case '+': return a + b;
         case '-': return a - b;
         case '*': return a * b;
-        case '/': return a / b;     /* operands are always >= 1 */
+        case '/': return a / b;     // operands are never 0
         default:  return a % b;
     }
 }
@@ -453,9 +441,7 @@ static void mathChallenge(void) {
     }
 }
 
-/* ================================================================== */
-/*  GAME 4 : HANGMAN                                                  */
-/* ================================================================== */
+// GAME 4 : Hangman
 static const char *HANG[7] = {
     "  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========",
     "  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========",
@@ -553,14 +539,12 @@ static void hangmanGame(void) {
     }
 }
 
-/* ================================================================== */
-/*  GAME 5 : TIC-TAC-TOE (Easy / Medium / Unbeatable minimax)         */
-/* ================================================================== */
+// GAME 5 : Tic-Tac-Toe
 static const int LINES[8][3] = {
     {0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}
 };
 
-/* returns 'X', 'O', 'D' (draw) or 0 (game still running) */
+// returns 'X', 'O', 'D' for draw, or 0 if the game is still going
 static int tttWinner(const char *b) {
     int i;
     for (i = 0; i < 8; i++)
@@ -594,7 +578,7 @@ static int tttAI(char *b, int level) {
 
     for (i = 0; i < 9; i++) if (b[i] == ' ') empty[ne++] = i;
 
-    if (level >= 2) {   /* take a winning move, then block the player */
+    if (level >= 2) {   // win if possible, else block
         for (pass = 0; pass < 2; pass++) {
             who = (pass == 0) ? 'O' : 'X';
             for (i = 0; i < ne; i++) {
@@ -610,7 +594,7 @@ static int tttAI(char *b, int level) {
         if (b[4] == ' ' && rand() % 2) return 4;
         return empty[rand() % ne];
     }
-    /* level 3: perfect play, random among equally good moves */
+    // level 3: minimax, random pick among the best moves
     best = -100;
     for (i = 0; i < ne; i++) {
         b[empty[i]] = 'O';
@@ -696,11 +680,9 @@ static void tttGame(void) {
     }
 }
 
-/* ================================================================== */
-/*  GAME 6 : SNAKE (real-time)                                        */
-/* ================================================================== */
-#define SW 30      /* playfield width  (cells, each drawn 2 chars wide) */
-#define SH 18      /* playfield height */
+// GAME 6 : Snake
+#define SW 30      // board width (each cell is 2 chars wide)
+#define SH 18      // board height
 
 static void snakeSpawn(int *fx, int *fy, const int *sx, const int *sy, int len, int ax, int ay) {
     int ok, i;
@@ -741,7 +723,7 @@ static void snakeGame(void) {
     bx = -1; by = -1; bt = 0;
     snakeSpawn(&fx, &fy, sx, sy, len, -1, -1);
 
-    dead = 0;   /* 1 = crashed, 2 = quit, 3 = board filled */
+    dead = 0;   // 1 crashed, 2 quit, 3 board full
     clr();
     printf("\033[?25l");
 
@@ -777,7 +759,7 @@ static void snakeGame(void) {
         eatBonus = (bx >= 0 && nx == bx && ny == by);
 
         if (nx < 0 || nx >= SW || ny < 0 || ny >= SH) { dead = 1; break; }
-        limit = eatFood ? len : len - 1;   /* tail moves away unless we grow */
+        limit = eatFood ? len : len - 1;   // tail moves unless we eat
         for (i = 0; i < limit; i++)
             if (sx[i] == nx && sy[i] == ny) { dead = 1; break; }
         if (dead) break;
@@ -800,7 +782,7 @@ static void snakeGame(void) {
         if (bx >= 0 && --bt <= 0) bx = -1;
         if (score > best) best = score;
 
-        /* ---------- render whole frame into one buffer ---------- */
+        // draw the whole frame into one buffer
         memset(grid, ' ', sizeof grid);
         grid[fy][fx] = '*';
         if (bx >= 0) grid[by][bx] = '$';
@@ -833,7 +815,7 @@ static void snakeGame(void) {
 
         delay = baseDelay - (len - 3) / 3 * 4;
         if (delay < 40) delay = 40;
-        if (dir == 0 || dir == 2) delay += delay / 3;   /* cells are taller than wide */
+        if (dir == 0 || dir == 2) delay += delay / 3;   // cells are taller than wide
         Sleep(delay);
     }
 
@@ -847,9 +829,7 @@ static void snakeGame(void) {
     pressEnter();
 }
 
-/* ================================================================== */
-/*  GAME 7 : MEMORY MASTER (Simon-style digit memory)                 */
-/* ================================================================== */
+// GAME 7 : Memory Master
 static void memoryGame(void) {
     static int best = 0;
     static const char *COL[9] = {
@@ -925,9 +905,7 @@ static void memoryGame(void) {
     pressEnter();
 }
 
-/* ================================================================== */
-/*  GAME 8 : BLACKJACK                                                */
-/* ================================================================== */
+// GAME 8 : Blackjack
 static int deck[52], dpos = 52;
 
 static void shuffleDeck(void) {
@@ -1012,7 +990,7 @@ static void blackjackGame(void) {
 
         pv = handVal(p, np);
         dv = handVal(d, nd);
-        outcome = 0;      /* 1 win, -1 lose, 0 push */
+        outcome = 0;      // 1 win, -1 lose, 0 push
         payout = 0;
         why = "";
 
@@ -1081,9 +1059,7 @@ static void blackjackGame(void) {
     pressEnter();
 }
 
-/* ================================================================== */
-/*  MAIN                                                              */
-/* ================================================================== */
+// MAIN
 int main(void) {
     int choice1, game;
 
